@@ -1,11 +1,11 @@
-defmodule ElixirAoc2021.MixProject do
+defmodule ElixirAoc2022.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_aoc_2021,
+      app: :elixir_aoc_2022,
       version: "0.1.0",
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,11 +21,7 @@ defmodule ElixirAoc2021.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-
-      {:advent_of_code_utils, "~> 1.0"},
-      {:priority_queue, "~> 1.0"}
+      {:advent_of_code_utils, "~> 3.0"}
     ]
   end
 end

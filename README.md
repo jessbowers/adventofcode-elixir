@@ -1,6 +1,8 @@
-# ElixirAoc2021
+# ElixirAoc2022
 
-Advent of Code 2021 in Elixir!
+Advent of Code 2022 in Elixir!
+
+https://hexdocs.pm/advent_of_code_utils/3.0.0/readme.html
 
 ## Installation
 
@@ -30,5 +32,5 @@ Advent of Code 2021 in Elixir!
 
     > iex -S mix
     > recompile()
-    > p1()
-    > p2()
+    > p1i()
+    > p2i()

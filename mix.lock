@@ -1,4 +1,5 @@
 %{
-  "advent_of_code_utils": {:hex, :advent_of_code_utils, "1.0.0", "e9ce8be22988e095991168e9d2dde802afc213aaae64491e9fde84dd877db41c", [:mix], [], "hexpm", "1fa5217ccb95a38ce2312dd7ea6057b0d0002a3eba7490feab704df4b8a94038"},
+  "advent_of_code_utils": {:hex, :advent_of_code_utils, "3.0.0", "055e1e0b9019f63c8206fd0da2bd86d5049a60f9f801b250a996613b3e6b9de0", [:mix], [{:floki, "~> 0.34", [hex: :floki, repo: "hexpm", optional: false]}], "hexpm", "087f5b62e7bb913e226bd16a464e322a891f38599095f2d99fa9244603e68680"},
+  "floki": {:hex, :floki, "0.34.0", "002d0cc194b48794d74711731db004fafeb328fe676976f160685262d43706a8", [:mix], [], "hexpm", "9c3a9f43f40dde00332a589bd9d389b90c1f518aef500364d00636acc5ebc99c"},
   "priority_queue": {:hex, :priority_queue, "1.0.0", "5ff5f83a764b635e71f0e41bf78b9763bb233bbac8f5733b4b09b6730bddf866", [:mix], [], "hexpm", "ba3dc420a5898d863803455c05ad870c6b6f3adb12b50ebea6cd6aeed1b358b7"},
 }
