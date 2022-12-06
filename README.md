@@ -1,8 +1,8 @@
 # ElixirAoc2022
 
-Advent of Code 2022 in Elixir!
+My [Advent of Code](https://adventofcode.com) 2022 workbook for [Elixir](https://elixir-lang.org).
 
-https://hexdocs.pm/advent_of_code_utils/3.0.0/readme.html
+The project makes use of the [Advent of Code Utils](https://hexdocs.pm/advent_of_code_utils/3.0.0/readme.html) project.
 
 ## Installation
 
