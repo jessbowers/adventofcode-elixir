@@ -12,14 +12,14 @@ aoc 2022, 6 do
     |> find_unique([], max)
   end
 
-  defp find_unique([{char, idx} | tail], prev, n) do
+  defp find_unique([{char, idx} | tail], prev, max) do
     # add the next char to the list, then truncate the list
-    list = [char | prev] |> Enum.take(n)
+    list = [char | prev] |> Enum.take(max)
 
     # test for a unique n chars
     case length(Enum.uniq(list)) do
-      ^n -> idx + 1
-      _ -> find_unique(tail, list, n)
+      ^max -> idx + 1
+      _ -> find_unique(tail, list, max)
     end
   end
 end
