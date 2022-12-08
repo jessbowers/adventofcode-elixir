@@ -21,7 +21,8 @@ defmodule ElixirAoc2022.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:advent_of_code_utils, "~> 3.0"}
+      {:advent_of_code_utils, "~> 3.0"},
+      {:json, "~> 1.4"}
     ]
   end
 end
