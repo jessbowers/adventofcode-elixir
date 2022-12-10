@@ -1,7 +1,9 @@
 import AOC
+import AocHelpers
 
 aoc 2022, 9 do
-  def p1(input), do: parse(input) |> run_course()
+  def p1(input), do: parse(input) |> create_rope(2) |> run_course()
+  def p2(input), do: parse(input) |> create_rope(10) |> run_course()
 
   defp parse(input) do
     input
@@ -16,25 +18,39 @@ aoc 2022, 9 do
     |> then(fn [d, n] -> {String.to_atom(d), String.to_integer(n)} end)
   end
 
+  defp create_rope(moves, knots), do: {moves, List.duplicate({0, 0}, knots)}
+
+  # Move funcions by direction
   defp move_dx(:U), do: fn {x, y} -> {x, y - 1} end
   defp move_dx(:D), do: fn {x, y} -> {x, y + 1} end
   defp move_dx(:L), do: fn {x, y} -> {x - 1, y} end
   defp move_dx(:R), do: fn {x, y} -> {x + 1, y} end
 
-  defp do_move([], course), do: course
-
-  defp do_move([{direction, n} | tail], {rope_h, rope_t, map}) do
-    rope_h
+  # move the head of the rope in a direction
+  # track tail's path in a map
+  defp do_move({direction, n}, {rope, map}) do
+    rope
+    |> hd()
     |> Stream.iterate(move_dx(direction))
     |> Enum.take(n + 1)
-    |> Enum.reduce({rope_h, rope_t, map}, fn h_xy, {_, t_xy, map} ->
-      t_xy = move_tail(t_xy, h_xy)
-      {h_xy, t_xy, Map.put(map, t_xy, true)}
+    |> Enum.reduce({rope, map}, fn
+      h_xy, {[_ | rtail], map} ->
+        rev_rope = move_rope([h_xy | rtail])
+        map = map |> Map.put(hd(rev_rope), true)
+        {rev_rope |> Enum.reverse(), map}
     end)
-    |> then(&do_move(tail, &1))
   end
 
-  defp move_tail({tx, ty}, {hx, hy}) do
+  # Move the rope's head & all knots below recursively
+  defp move_rope(rope, result \\ [])
+  defp move_rope([t], result), do: [t | result]
+
+  defp move_rope([head_xy | [n_xy | rtail]], result) do
+    n_xy = move_tail(head_xy, n_xy)
+    move_rope([n_xy | rtail], [head_xy | result])
+  end
+
+  defp move_tail({hx, hy}, {tx, ty}) do
     case {hx - tx, hy - ty} do
       {dx, dy} when abs(dx) <= 1 and abs(dy) <= 1 ->
         {tx, ty}
@@ -45,12 +61,10 @@ aoc 2022, 9 do
     end
   end
 
-  defp run_course(moves) do
-    start_xy = {0, 0}
-    course = {start_xy, start_xy, %{start_xy => true}}
-
-    do_move(moves, course)
-    |> then(fn {_, _, m} -> m end)
+  defp run_course({moves, rope}) do
+    moves
+    |> Enum.reduce({rope, %{}}, &do_move/2)
+    |> elem(1)
     |> Enum.count()
   end
 end
