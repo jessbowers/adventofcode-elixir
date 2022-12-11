@@ -1,5 +1,4 @@
 import AOC
-import AocHelpers
 
 aoc 2022, 9 do
   def p1(input), do: parse(input) |> create_rope(2) |> run_course()
