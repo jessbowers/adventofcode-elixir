@@ -22,7 +22,8 @@ defmodule ElixirAoc2022.MixProject do
   defp deps do
     [
       {:advent_of_code_utils, "~> 3.0"},
-      {:json, "~> 1.4"}
+      {:json, "~> 1.4"},
+      {:priority_queue, "~> 1.0"}
     ]
   end
 end
