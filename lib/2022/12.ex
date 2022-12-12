@@ -1,6 +1,8 @@
 import AOC
 
 aoc 2022, 12 do
+  import Helpers.PriorityQueueHelper
+
   def p1(i), do: parse(i) |> find_source() |> find_shortest_path()
   def p2(i), do: parse(i) |> find_source() |> find_shortest_path_of_all()
 
@@ -26,27 +28,6 @@ aoc 2022, 12 do
     |> Enum.map(fn {dx, dy} -> {dx + x, dy + y} end)
     |> Enum.map(fn k -> {k, Map.get(map, k, nil)} end)
     |> Enum.filter(&elem(&1, 1))
-  end
-
-  defp member_of_queue?(queue, value) do
-    queue
-    |> PriorityQueue.to_list()
-    |> Enum.filter(fn {_k, v} -> v == value end)
-    |> then(fn
-      # nothing returned from the filter
-      [] -> {:missing}
-      [{val, xy}] -> {xy, val}
-      _ -> {:error}
-    end)
-  end
-
-  # priority queue, finds the value in the queue, moves to a different key
-  defp replace_in_queue(queue, value, key) do
-    queue
-    |> PriorityQueue.to_list()
-    |> Enum.reject(&(elem(&1, 1) == value))
-    |> Enum.reduce(PriorityQueue.new(), fn {k, v}, pq -> pq |> PriorityQueue.put(k, v) end)
-    |> PriorityQueue.put(key, value)
   end
 
   # Uniform Cost Search
@@ -76,22 +57,9 @@ aoc 2022, 12 do
       |> Enum.reject(&MapSet.member?(explored, elem(&1, 0)))
       # reject if the height is to much
       |> Enum.reject(&(elem(&1, 1) > curr_val + 1))
-
-      # add whether this value is in the frontier
-      |> Enum.map(&{&1, member_of_queue?(frontier, elem(&1, 0))})
-      |> Enum.reduce(frontier, fn
-        # add those not in the frontier to it
-        {{xy, _}, {:missing}}, acc ->
-          acc |> PriorityQueue.put(curr_cost, xy)
-
-        # replace any with cost values that are > current cost
-        {{xy, _}, {_, cost}}, acc when curr_cost < cost ->
-          acc |> replace_in_queue(xy, curr_cost)
-
-        # default, cost is greater, etc
-        _, acc ->
-          acc
-      end)
+      # insert these xy into the Priority Queue if the cost is < existing
+      # or if the xy doesn't already exist in the queue (upsert_if)
+      |> Enum.reduce(frontier, fn {xy, _}, pq -> pq |> upsert_if(curr_cost, xy, &(&1 < &2)) end)
 
     # explore the next closest node
     uniform_cost_search(PriorityQueue.pop(frontier), target, explored, map)
@@ -104,19 +72,28 @@ aoc 2022, 12 do
   end
 
   defp find_shortest_path({map, source}) do
+    # target is the letter E, which will have the height z
     {target, _} = Enum.find(map, &(elem(&1, 1) == ?E))
     map = map |> Map.put(target, ?z)
+    # unexplored x,y
     frontier = PriorityQueue.new()
+    # x,y we've already covered in the path
     explored = MapSet.new()
+    # search for path with lowest cost
     uniform_cost_search({{0, source}, frontier}, target, explored, map)
   end
 
   defp find_shortest_path_of_all({map, _}) do
     map
+    # find all possible starting points
     |> Enum.filter(&(elem(&1, 1) == ?a))
+    # take just the xy
     |> Enum.map(&elem(&1, 0))
+    # for every xy, shortest path or nil
     |> Enum.map(&find_shortest_path({map, &1}))
+    # remove nils
     |> Enum.filter(& &1)
+    # just return shortest of all
     |> Enum.sort(:asc)
     |> Enum.at(0)
   end
