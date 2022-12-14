@@ -22,7 +22,7 @@ aoc 2022, 12 do
     |> Map.new()
   end
 
-  # return adjacent cells in map
+  # return adjacent cells in map as list of {xy, val}
   defp adjacents_to(map, {x, y}) do
     [{-1, 0}, {0, -1}, {1, 0}, {0, 1}]
     |> Enum.map(fn {dx, dy} -> {dx + x, dy + y} end)
