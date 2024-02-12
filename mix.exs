@@ -1,11 +1,13 @@
-defmodule ElixirAoc2022.MixProject do
+Code.compiler_options(on_undefined_variable: :warn)
+
+defmodule ElixirAoc.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_aoc_2022,
+      app: :elixir_aoc,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,7 +23,7 @@ defmodule ElixirAoc2022.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:advent_of_code_utils, "~> 3.0"},
+      {:advent_of_code_utils, "~> 4.0"},
       {:json, "~> 1.4"},
       {:priority_queue, "~> 1.0"}
     ]
